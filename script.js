@@ -16,7 +16,6 @@ const usersList = document.getElementById("users");
 userForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const email = userEmail.value.trim().toLocaleLowerCase();
   //   const confimEmail = confirmUserEmail.value.trim().toLocaleLowerCase();
   //   const password = userPassword.value.trim().toLocaleLowerCase();
   //   const confimPassword = confirmUserPassword.value.trim().toLocaleLowerCase();
@@ -27,7 +26,16 @@ userForm.addEventListener("submit", (e) => {
     submitMessage.innerText = "Konto skapat";
     submitMessage.classList.add("success");
     submitMessage.classList.remove("error");
-    addUser(email);
+
+    const email = userEmail.value.trim().toLocaleLowerCase();
+    const password = userPassword.value.trim();
+
+    const user = {
+      email: email,
+      password: password,
+    };
+
+    addUser(user);
     resetForm();
   } else {
     submitMessage.innerText = "Formuläret är inte giltigt";
@@ -119,8 +127,14 @@ function renderUser(users) {
 
   usersAsArray.forEach((user) => {
     const li = document.createElement("li");
-    li.innerText = user;
-    console.log("li", li);
+    const email = document.createElement("p");
+    const password = document.createElement("p");
+    email.innerText = user.email;
+    password.innerText = user.password;
+
+    li.appendChild(email);
+    li.appendChild(password);
+    // console.log("li", li);
     usersList.appendChild(li);
   });
 }
