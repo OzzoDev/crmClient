@@ -17,23 +17,23 @@ userForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const email = userEmail.value.trim().toLocaleLowerCase();
-  const confimEmail = confirmUserEmail.value.trim().toLocaleLowerCase();
-  const password = userPassword.value.trim().toLocaleLowerCase();
-  const confimPassword = confirmUserPassword.value.trim().toLocaleLowerCase();
+  //   const confimEmail = confirmUserEmail.value.trim().toLocaleLowerCase();
+  //   const password = userPassword.value.trim().toLocaleLowerCase();
+  //   const confimPassword = confirmUserPassword.value.trim().toLocaleLowerCase();
 
-  if (email === "") {
-    submitMessage.innerText = "Field must not be empty";
-    submitMessage.classList.add("error");
-    submitMessage.classList.remove("success");
-  } else {
-    submitMessage.innerText = "User created";
+  const isValid = userEmailLabel.innerText === "" && confirmUserEmailLabel.innerText === "" && userPasswordLabel.innerText === "" && confirmUserPasswordLabel.innerText === "";
+
+  if (isValid) {
+    submitMessage.innerText = "Konto skapat";
     submitMessage.classList.add("success");
     submitMessage.classList.remove("error");
-
     addUser(email);
+    resetForm();
+  } else {
+    submitMessage.innerText = "Formuläret är inte giltigt";
+    submitMessage.classList.add("error");
+    submitMessage.classList.remove("success");
   }
-
-  resetForm();
 });
 
 userEmail.addEventListener("blur", () => {
@@ -59,7 +59,7 @@ confirmUserEmail.addEventListener("blur", () => {
 });
 
 userPassword.addEventListener("blur", () => {
-  const password = userPassword.value.trim().toLocaleLowerCase();
+  const password = userPassword.value.trim();
   if (password.length < 8) {
     userPasswordLabel.innerText = "Lösenordet måste vara minst 8 tecken långt";
   } else {
@@ -68,13 +68,13 @@ userPassword.addEventListener("blur", () => {
 });
 
 confirmUserPassword.addEventListener("blur", () => {
-  const confimPassword = confirmUserPassword.value.trim().toLocaleLowerCase();
-  const password = userPassword.value.trim().toLocaleLowerCase();
-
+  const confimPassword = confirmUserPassword.value.trim();
+  const password = userPassword.value.trim();
+  console.log(confimPassword, password, confimPassword === password);
   if (password !== confimPassword) {
     confirmUserPasswordLabel.innerText = "Lösenorden måste vara samma";
   } else {
-    confirmUserEmailLabel.innerText = "";
+    confirmUserPasswordLabel.innerText = "";
   }
 });
 
