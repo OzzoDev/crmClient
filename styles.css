@@ -91,6 +91,17 @@ input:focus {
   }
 }
 
+.btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+}
+
+#resetPasswordBtn {
+  margin-bottom: 7px;
+}
+
 .hidden {
   display: none;
 }

@@ -18,25 +18,28 @@ const inDiv = document.getElementById("signInForm");
 const inForm = document.getElementById("inForm");
 const inEmail = document.getElementById("inEmail");
 const inPassword = document.getElementById("inPassword");
+const inNewPassword = document.getElementById("inNewPassword");
+
+const inEmailLabel = document.getElementById("inEmailLabel");
+const inPasswordLabel = document.getElementById("inPasswordLabel");
+const inNewPasswordLabel = document.getElementById("inNewPasswordLabel");
+
+const inResetBtn = document.getElementById("resetPasswordBtn");
 const inSubmitMessage = document.getElementById("inSubmitMessage");
 
 const usersList = document.getElementById("users");
 
+let signedIn = false;
+
 signRadioBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    // upForm.classList.toggle("hidden");
-    // inForm.classList.toggle("hidden");
-    // console.log("Upform", upForm);
-    // console.log("Inform", inForm);
     const index = Array.from(signRadioBtns).indexOf(btn);
     if (index === 0) {
       upDiv.classList.remove("hidden");
       inDiv.classList.add("hidden");
-      console.log("Sign up");
     } else if (index === 1) {
       upDiv.classList.add("hidden");
       inDiv.classList.remove("hidden");
-      console.log("Sign in");
     }
   });
 });
@@ -113,7 +116,62 @@ confirmUpPassword.addEventListener("blur", () => {
   }
 });
 
+inEmail.addEventListener("blur", () => {
+  const email = inEmail.value.trim().toLocaleLowerCase();
+  if (!email.includes(".") || !email.includes("@")) {
+    inEmailLabel.innerText = "Ange en giltig mejladdress";
+  }
+});
+
+inPassword.addEventListener("blur", () => {
+  const password = inPassword.value.trim();
+  if (password.length < 8) {
+    inPasswordLabel.innerText = "Lösenordet måste vara minst 8 tecken långt";
+  }
+});
+
+inResetBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const email = inEmail.value.trim().toLocaleLowerCase();
+  if (email.includes(".") && email.includes("@")) {
+  }
+  //check if email is on server
+  inNewPassword.classList.remove("hidden");
+});
+
+inForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  //sign in
+
+  const email = inEmail.value;
+  const password = inPassword.value;
+
+  const validEmail = email.includes(".") && email.includes("@");
+  const validPassword = password.length > 7;
+
+  const isValid = inEmailLabel.innerText === "" && inPasswordLabel.innerText === "" && validEmail && validPassword;
+
+  if (isValid) {
+    getUsers()
+      .then((allUsers) => {
+        const userExists = allUsers.filter((user) => user.email === email).length > 0;
+        const rightPassword = allUsers.filter((user) => user.password === password).length > 0;
+
+        if (userExists && rightPassword) {
+          signedIn = true;
+          console.log("Congrats you are signed in!", signedIn);
+        } else {
+          console.log("Invalid email or password");
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching users", error);
+      });
+  }
+});
+
 async function getUsers() {
+  let fetchUsers = [];
   try {
     const res = await fetch("http://localhost:3000/users");
     if (!res.ok) {
@@ -121,10 +179,12 @@ async function getUsers() {
     } else {
       const users = await res.json();
       console.log("Users: ", users);
+      fetchUsers = users;
     }
   } catch (error) {
     console.log("There was a problem with fetching users");
   }
+  return fetchUsers;
 }
 
 async function addUser(user) {
