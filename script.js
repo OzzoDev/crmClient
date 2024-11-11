@@ -24,6 +24,7 @@ const inEmailLabel = document.getElementById("inEmailLabel");
 const inPasswordLabel = document.getElementById("inPasswordLabel");
 const inNewPasswordLabel = document.getElementById("inNewPasswordLabel");
 
+const cancelResetPasswordBtn = document.getElementById("cancelResetPasswordBtn");
 const inResetBtn = document.getElementById("resetPasswordBtn");
 const inSubmitMessage = document.getElementById("inSubmitMessage");
 
@@ -66,7 +67,7 @@ upForm.addEventListener("submit", (e) => {
     };
 
     addUser(user);
-    resetForm();
+    resetForm(1);
   } else {
     upSubmitMessage.innerText = "Formuläret är inte giltigt";
     upSubmitMessage.classList.add("error");
@@ -120,6 +121,8 @@ inEmail.addEventListener("blur", () => {
   const email = inEmail.value.trim().toLocaleLowerCase();
   if (!email.includes(".") || !email.includes("@")) {
     inEmailLabel.innerText = "Ange en giltig mejladdress";
+  } else {
+    inEmailLabel.innerText = "";
   }
 });
 
@@ -127,16 +130,84 @@ inPassword.addEventListener("blur", () => {
   const password = inPassword.value.trim();
   if (password.length < 8) {
     inPasswordLabel.innerText = "Lösenordet måste vara minst 8 tecken långt";
+  } else {
+    inPasswordLabel.innerText = "";
   }
+});
+
+inNewPassword.addEventListener("blur", () => {
+  const password = inPassword.value.trim();
+  const newPassword = inNewPassword.value.trim();
+  if (password !== newPassword) {
+    inNewPasswordLabel.innerText = "Lösenorden måte vara samma";
+  } else {
+    inNewPasswordLabel.innerText = "";
+  }
+});
+
+cancelResetPasswordBtn.addEventListener("click", () => {
+  inPasswordLabel.innerText = "";
+  inNewPasswordLabel.innerText = "";
+  resetLables(2);
+  inResetBtn.innerText = "Återställ lösenord";
+  inSubmitMessage.innerText = "";
+  cancelResetPasswordBtn.classList.add("hidden");
+  inNewPassword.classList.add("hidden");
 });
 
 inResetBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  const email = inEmail.value.trim().toLocaleLowerCase();
-  if (email.includes(".") && email.includes("@")) {
+  const newPasswordClassList = inNewPassword.classList;
+
+  if (newPasswordClassList.contains("hidden")) {
+    resetLables(2);
   }
-  //check if email is on server
-  inNewPassword.classList.remove("hidden");
+
+  const email = inEmail.value.trim().toLocaleLowerCase();
+
+  if (email.includes(".") && email.includes("@")) {
+    const password = inPassword.value;
+    const confirmNewPassWord = inNewPassword.value;
+    const validNewPassword = password.length > 7 && password === confirmNewPassWord;
+    const isValid = inPasswordLabel.innerText === "" && inNewPasswordLabel.innerText === "" && validNewPassword;
+
+    if (isValid || newPasswordClassList.contains("hidden")) {
+      inNewPassword.classList.toggle("hidden");
+
+      if (inNewPassword.classList.contains("hidden")) {
+        console.log("Your are valid");
+        getUsers()
+          .then((allUsers) => {
+            const userExists = allUsers.filter((user) => user.email === email).length > 0;
+
+            if (userExists) {
+              console.log("Changed password");
+            }
+          })
+          .catch((error) => {
+            console.log("Error fetching users", error);
+          });
+        inNewPassword.classList.add("hidden");
+        inPassword.placeholder = "Ange lösenord";
+        inNewPassword.placeholder = "Bekräfta nytt lösenord";
+        inResetBtn.innerText = "Återställ lösenord";
+        cancelResetPasswordBtn.classList.add("hidden");
+      } else {
+        console.log("Why are this code executed?");
+        inPassword.placeholder = "Ange lösenord";
+        inNewPassword.placeholder = "Bekräfta nytt lösenord";
+        inResetBtn.innerText = "Bekräfta lösenord";
+        cancelResetPasswordBtn.classList.remove("hidden");
+        resetLables(2);
+      }
+    } else {
+      // inNewPassword.classList.add("hidden");
+
+      inSubmitMessage.innerText = "Formuläret är inte giltigt";
+    }
+  } else {
+    inEmailLabel.innerText = "Ange en giltig mejladress";
+  }
 });
 
 inForm.addEventListener("submit", (e) => {
@@ -203,6 +274,10 @@ async function addUser(user) {
       const users = await res.json();
       renderUser(users);
       upSubmitMessage.innerText = users.message;
+      if (users.message === "User added successfully") {
+        signedIn = true;
+        console.log("Congrats you are signed in!", signedIn);
+      }
     }
   } catch (error) {
     console.log(`There was a problem adding user ${user}`);
@@ -227,9 +302,28 @@ function renderUser(users) {
   });
 }
 
-function resetForm() {
-  upEmail.value = "";
-  confirmUpEmail.value = "";
-  upPassword.value = "";
-  confirmUpPassword.value = "";
+function resetForm(form) {
+  if (form === 1) {
+    upEmail.value = "";
+    confirmUpEmail.value = "";
+    upPassword.value = "";
+    confirmUpPassword.value = "";
+  } else if (form === 2) {
+    inEmail.value = "";
+    inNewPassword.value = "";
+    inPassword.value = "";
+  }
+}
+
+function resetLables(form) {
+  if (form === 1) {
+    upEmailLabel.innerText = "";
+    confirmUpEmailLabel.innerText = "";
+    upPasswordLabel.innerText = "";
+    confirmUpPasswordLabel.innerText = "";
+  } else if (form === 2) {
+    inEmailLabel.innerText = "";
+    inPasswordLabel.innerText = "";
+    inNewPasswordLabel.innerText = "";
+  }
 }

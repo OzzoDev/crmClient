@@ -98,7 +98,12 @@ input:focus {
   border: none;
 }
 
-#resetPasswordBtn {
+.btnCancel {
+  background-color: rgb(240, 59, 59);
+}
+
+#resetPasswordBtn,
+#cancelResetPasswordBtn {
   margin-bottom: 7px;
 }
 
