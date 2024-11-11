@@ -17,10 +17,12 @@ const upSubmitMessage = document.getElementById("upSubmitMessage");
 const inDiv = document.getElementById("signInForm");
 const inForm = document.getElementById("inForm");
 const inEmail = document.getElementById("inEmail");
+const passCode = document.getElementById("passCode");
 const inPassword = document.getElementById("inPassword");
 const inNewPassword = document.getElementById("inNewPassword");
 
 const inEmailLabel = document.getElementById("inEmailLabel");
+const passCodeLabel = document.getElementById("passCodeLabel");
 const inPasswordLabel = document.getElementById("inPasswordLabel");
 const inNewPasswordLabel = document.getElementById("inNewPasswordLabel");
 
@@ -31,6 +33,7 @@ const inSubmitMessage = document.getElementById("inSubmitMessage");
 const usersList = document.getElementById("users");
 
 let signedIn = false;
+let passChangeCode = "";
 
 signRadioBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -126,6 +129,15 @@ inEmail.addEventListener("blur", () => {
   }
 });
 
+passCode.addEventListener("blur", () => {
+  const code = passCode.value.trim().toLocaleLowerCase();
+  if (code !== passChangeCode) {
+    passCodeLabel.innerText = "Koden stämmer inte";
+  } else {
+    passCodeLabel.innerText = "";
+  }
+});
+
 inPassword.addEventListener("blur", () => {
   const password = inPassword.value.trim();
   if (password.length < 8) {
@@ -153,6 +165,7 @@ cancelResetPasswordBtn.addEventListener("click", () => {
   inSubmitMessage.innerText = "";
   cancelResetPasswordBtn.classList.add("hidden");
   inNewPassword.classList.add("hidden");
+  passCode.classList.add("hidden");
 });
 
 inResetBtn.addEventListener("click", (e) => {
@@ -175,13 +188,19 @@ inResetBtn.addEventListener("click", (e) => {
       inNewPassword.classList.toggle("hidden");
 
       if (inNewPassword.classList.contains("hidden")) {
-        console.log("Your are valid");
+        // console.log("Your are valid");
         getUsers()
           .then((allUsers) => {
             const userExists = allUsers.filter((user) => user.email === email).length > 0;
 
             if (userExists) {
               console.log("Changed password");
+              // getPassCode(email);
+              console.log(passCode.value, passChangeCode);
+              const validCode = passCode.value === passChangeCode;
+              if (validCode) {
+                changePassword({ email: email, password: password, confirmNewPassWord: confirmNewPassWord, code: passCode.value });
+              }
             }
           })
           .catch((error) => {
@@ -192,17 +211,17 @@ inResetBtn.addEventListener("click", (e) => {
         inNewPassword.placeholder = "Bekräfta nytt lösenord";
         inResetBtn.innerText = "Återställ lösenord";
         cancelResetPasswordBtn.classList.add("hidden");
+        passCode.classList.add("hidden");
       } else {
-        console.log("Why are this code executed?");
+        getPassCode(email);
         inPassword.placeholder = "Ange lösenord";
         inNewPassword.placeholder = "Bekräfta nytt lösenord";
         inResetBtn.innerText = "Bekräfta lösenord";
+        passCode.classList.remove("hidden");
         cancelResetPasswordBtn.classList.remove("hidden");
         resetLables(2);
       }
     } else {
-      // inNewPassword.classList.add("hidden");
-
       inSubmitMessage.innerText = "Formuläret är inte giltigt";
     }
   } else {
@@ -272,7 +291,7 @@ async function addUser(user) {
       throw new Error("Network response was not ok");
     } else {
       const users = await res.json();
-      renderUser(users);
+      renderUser(users.users);
       upSubmitMessage.innerText = users.message;
       if (users.message === "User added successfully") {
         signedIn = true;
@@ -284,20 +303,70 @@ async function addUser(user) {
   }
 }
 
+async function getPassCode(email) {
+  try {
+    const response = await fetch("http://localhost:3000/passCode", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Server received call");
+      console.log("Verification code:", data.code);
+      passChangeCode = data.code;
+    } else {
+      console.log("Error", await response.text());
+    }
+  } catch (error) {
+    console.log("Error", error);
+  }
+}
+
+async function changePassword(credentials) {
+  try {
+    const response = await fetch("http://localhost:3000/changePassword", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ credentials: credentials }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Server is trying to update password...");
+      const updatedUsers = data.users;
+      if (updatedUsers.length > 0) {
+        console.log("Updated Users: ", updatedUsers);
+        renderUser(updatedUsers);
+        signedIn = true;
+        console.log("Congrats you are signed in!", signedIn);
+      }
+    } else {
+      console.log("Error", await response.text());
+    }
+  } catch (error) {
+    console.log("Error", error);
+  }
+}
+
 function renderUser(users) {
   usersList.innerHTML = "";
-  const usersAsArray = users.users;
 
-  usersAsArray.forEach((user) => {
+  users.forEach((user) => {
     const li = document.createElement("li");
     const email = document.createElement("p");
-    // const password = document.createElement("p");
+    const password = document.createElement("p");
     email.innerText = user.email;
-    // password.innerText = user.password;
+    password.innerText = user.password;
 
     li.appendChild(email);
-    // li.appendChild(password);
-    // console.log("li", li);
+    li.appendChild(password);
+    console.log("li", li);
     usersList.appendChild(li);
   });
 }
