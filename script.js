@@ -146,4 +146,7 @@ function renderUser(users) {
 
 function resetForm() {
   userEmail.value = "";
+  confirmUserEmail.value = "";
+  userPassword.value = "";
+  confirmUserPassword.value = "";
 }
