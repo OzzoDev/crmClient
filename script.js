@@ -133,12 +133,12 @@ function renderUser(users) {
   usersAsArray.forEach((user) => {
     const li = document.createElement("li");
     const email = document.createElement("p");
-    const password = document.createElement("p");
+    // const password = document.createElement("p");
     email.innerText = user.email;
-    password.innerText = user.password;
+    // password.innerText = user.password;
 
     li.appendChild(email);
-    li.appendChild(password);
+    // li.appendChild(password);
     // console.log("li", li);
     usersList.appendChild(li);
   });
