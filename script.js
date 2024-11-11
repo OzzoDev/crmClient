@@ -1,36 +1,59 @@
-const userForm = document.getElementById("userForm");
-const userEmail = document.getElementById("userEmail");
-const confirmUserEmail = document.getElementById("confirmUserEmail");
-const userPassword = document.getElementById("userPassword");
-const confirmUserPassword = document.getElementById("confirmUserPassword");
+const signRadioBtns = document.querySelectorAll(".signBtn");
 
-const userEmailLabel = document.getElementById("userEmailLabel");
-const confirmUserEmailLabel = document.getElementById("confirmUserEmailLabel");
-const userPasswordLabel = document.getElementById("userPasswordLabel");
+const upDiv = document.getElementById("signUpForm");
+const upForm = document.getElementById("upForm");
+const upEmail = document.getElementById("upEmail");
+const confirmUpEmail = document.getElementById("confirmUpEmail");
+const upPassword = document.getElementById("upPassword");
+const confirmUpPassword = document.getElementById("confirmUpPassword");
 
-const confirmUserPasswordLabel = document.getElementById("confirmUserPasswordLabel");
+const upEmailLabel = document.getElementById("upEmailLabel");
+const confirmUpEmailLabel = document.getElementById("confirmUpEmailLabel");
+const upPasswordLabel = document.getElementById("upPasswordLabel");
+const confirmUpPasswordLabel = document.getElementById("confirmUpPasswordLabel");
 
-const submitMessage = document.getElementById("submitMessage");
+const upSubmitMessage = document.getElementById("upSubmitMessage");
+
+const inDiv = document.getElementById("signInForm");
+const inForm = document.getElementById("inForm");
+const inEmail = document.getElementById("inEmail");
+const inPassword = document.getElementById("inPassword");
+const inSubmitMessage = document.getElementById("inSubmitMessage");
+
 const usersList = document.getElementById("users");
 
-userForm.addEventListener("submit", (e) => {
+signRadioBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    // upForm.classList.toggle("hidden");
+    // inForm.classList.toggle("hidden");
+    // console.log("Upform", upForm);
+    // console.log("Inform", inForm);
+    const index = Array.from(signRadioBtns).indexOf(btn);
+    if (index === 0) {
+      upDiv.classList.remove("hidden");
+      inDiv.classList.add("hidden");
+      console.log("Sign up");
+    } else if (index === 1) {
+      upDiv.classList.add("hidden");
+      inDiv.classList.remove("hidden");
+      console.log("Sign in");
+    }
+  });
+});
+
+upForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  //   const confimEmail = confirmUserEmail.value.trim().toLocaleLowerCase();
-  //   const password = userPassword.value.trim().toLocaleLowerCase();
-  //   const confimPassword = confirmUserPassword.value.trim().toLocaleLowerCase();
-
-  const isValid = userEmailLabel.innerText === "" && confirmUserEmailLabel.innerText === "" && userPasswordLabel.innerText === "" && confirmUserPasswordLabel.innerText === "" && userEmail.value.includes(".") && userEmail.value.includes(".") && userPassword.value.length > 7;
+  const isValid = upEmailLabel.innerText === "" && confirmUpEmailLabel.innerText === "" && upPasswordLabel.innerText === "" && confirmUpPasswordLabel.innerText === "" && upEmail.value.includes(".") && upEmail.value.includes("@") && upPassword.value.length > 7;
 
   if (isValid) {
-    // submitMessage.innerText = "Konto skapat";
-    submitMessage.classList.add("success");
-    submitMessage.classList.remove("error");
+    upSubmitMessage.classList.add("success");
+    upSubmitMessage.classList.remove("error");
 
-    const email = userEmail.value.trim().toLocaleLowerCase();
-    const confirmEmail = userEmail.value.trim().toLocaleLowerCase();
-    const password = userPassword.value.trim();
-    const confimPassword = userPassword.value.trim();
+    const email = upEmail.value.trim().toLocaleLowerCase();
+    const confirmEmail = upEmail.value.trim().toLocaleLowerCase();
+    const password = upPassword.value.trim();
+    const confimPassword = upPassword.value.trim();
 
     const user = {
       email: email,
@@ -42,51 +65,51 @@ userForm.addEventListener("submit", (e) => {
     addUser(user);
     resetForm();
   } else {
-    submitMessage.innerText = "Formuläret är inte giltigt";
-    submitMessage.classList.add("error");
-    submitMessage.classList.remove("success");
+    upSubmitMessage.innerText = "Formuläret är inte giltigt";
+    upSubmitMessage.classList.add("error");
+    upSubmitMessage.classList.remove("success");
   }
 });
 
-userEmail.addEventListener("blur", () => {
-  const email = userEmail.value.trim().toLocaleLowerCase();
+upEmail.addEventListener("blur", () => {
+  const email = upEmail.value.trim().toLocaleLowerCase();
   if (email === "") {
-    userEmailLabel.innerText = "Fältet får inte vara tomt";
+    upEmailLabel.innerText = "Fältet får inte vara tomt";
   } else if (!email.includes("@") || !email.includes(".")) {
-    userEmailLabel.innerText = "Ange en giltig mejladress";
+    upEmailLabel.innerText = "Ange en giltig mejladress";
   } else {
-    userEmailLabel.innerText = "";
+    upEmailLabel.innerText = "";
   }
 });
 
-confirmUserEmail.addEventListener("blur", () => {
-  const confirmEmail = confirmUserEmail.value.trim().toLocaleLowerCase();
-  const email = userEmail.value.trim().toLocaleLowerCase();
+confirmUpEmail.addEventListener("blur", () => {
+  const confirmEmail = confirmUpEmail.value.trim().toLocaleLowerCase();
+  const email = upEmail.value.trim().toLocaleLowerCase();
 
   if (email !== confirmEmail) {
-    confirmUserEmailLabel.innerText = "Mejladresserna måste vara samma";
+    confirmUpEmailLabel.innerText = "Mejladresserna måste vara samma";
   } else {
-    confirmUserEmailLabel.innerText = "";
+    confirmUpEmailLabel.innerText = "";
   }
 });
 
-userPassword.addEventListener("blur", () => {
-  const password = userPassword.value.trim();
+upPassword.addEventListener("blur", () => {
+  const password = upPassword.value.trim();
   if (password.length < 8) {
-    userPasswordLabel.innerText = "Lösenordet måste vara minst 8 tecken långt";
+    upPasswordLabel.innerText = "Lösenordet måste vara minst 8 tecken långt";
   } else {
-    userPasswordLabel.innerText = "";
+    upPasswordLabel.innerText = "";
   }
 });
 
-confirmUserPassword.addEventListener("blur", () => {
-  const confimPassword = confirmUserPassword.value.trim();
-  const password = userPassword.value.trim();
-  console.log(confimPassword, password, confimPassword === password);
+confirmUpPassword.addEventListener("blur", () => {
+  const confimPassword = confirmUpPassword.value.trim();
+  const password = upPassword.value.trim();
+
   if (password !== confimPassword) {
-    confirmUserPasswordLabel.innerText = "Lösenorden måste vara samma";
+    confirmUpPasswordLabel.innerText = "Lösenorden måste vara samma";
   } else {
-    confirmUserPasswordLabel.innerText = "";
+    confirmUpPasswordLabel.innerText = "";
   }
 });
 
@@ -119,7 +142,7 @@ async function addUser(user) {
     } else {
       const users = await res.json();
       renderUser(users);
-      submitMessage.innerText = users.message;
+      upSubmitMessage.innerText = users.message;
     }
   } catch (error) {
     console.log(`There was a problem adding user ${user}`);
@@ -145,8 +168,8 @@ function renderUser(users) {
 }
 
 function resetForm() {
-  userEmail.value = "";
-  confirmUserEmail.value = "";
-  userPassword.value = "";
-  confirmUserPassword.value = "";
+  upEmail.value = "";
+  confirmUpEmail.value = "";
+  upPassword.value = "";
+  confirmUpPassword.value = "";
 }

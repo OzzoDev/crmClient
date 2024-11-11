@@ -7,26 +7,53 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div>
-      <h2>Add new user</h2>
-      <form id="userForm">
-        <input id="userEmail" placeholder="Ange mejl" />
-        <label for="userEmail" id="userEmailLabel"></label>
+    <!-- <h2>Add new user</h2> -->
 
-        <input id="confirmUserEmail" placeholder="Bekräfta mejl" />
-        <label for="confirmUserEmail" id="confirmUserEmailLabel"></label>
+    <!-- sign up -->
 
-        <input id="userPassword" type="password" placeholder="Välj ett lösenord" />
-        <label for="userPassword" id="userPasswordLabel"></label>
+    <div class="buttonGroup">
+      <input type="radio" id="signUp" class="signBtn" name="auth" checked />
+      <label for="signUp">Sign Up</label>
 
-        <input id="confirmUserPassword" type="password" placeholder="Bekräfta lösenord" />
-        <label for="confirmUserPassword" id="confirmUserPasswordLabel"></label>
-
-        <button type="submit" id="submitBtn">Skicka</button>
-        <p id="submitMessage"></p>
-      </form>
-      <ul id="users"></ul>
+      <input type="radio" id="signIn" class="signBtn" name="auth" />
+      <label for="signIn">Sign In</label>
     </div>
+
+    <div id="signUpForm">
+      <form id="upForm" class="accountForm">
+        <input id="upEmail" placeholder="Ange mejl" />
+        <label for="upEmail" id="upEmailLabel"></label>
+
+        <input id="confirmUpEmail" placeholder="Bekräfta mejl" />
+        <label for="confirmUpEmail" id="confirmUpEmailLabel"></label>
+
+        <input id="upPassword" type="password" placeholder="Välj ett lösenord" />
+        <label for="upPassword" id="upPasswordLabel"></label>
+
+        <input id="confirmUpPassword" type="password" placeholder="Bekräfta lösenord" />
+        <label for="confirmUpPassword" id="confirmUpPasswordLabel"></label>
+
+        <button type="submit" id="upSubmitBtn" class="submitBtn">Skicka</button>
+        <p id="upSubmitMessage" class="submitMessage"></p>
+      </form>
+    </div>
+
+    <!-- sign in -->
+    <div id="signInForm" class="hidden">
+      <form id="inForm" class="accountForm">
+        <input id="inEmail" placeholder="Ange mejl" />
+        <label for="inEmail" id="inEmailLabel"></label>
+
+        <input id="inPassword" type="password" placeholder="Ange lösenord" />
+        <label for="inPassword" id="inPasswordLabel"></label>
+
+        <button type="submit" id="inSubmitBtn" class="submitBtn">Skicka</button>
+        <p id="inSubmitMessage" class="submitMessage"></p>
+      </form>
+    </div>
+
+    <ul id="users"></ul>
+
     <script src="script.js"></script>
   </body>
 </html>
