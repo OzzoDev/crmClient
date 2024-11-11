@@ -20,7 +20,7 @@ userForm.addEventListener("submit", (e) => {
   //   const password = userPassword.value.trim().toLocaleLowerCase();
   //   const confimPassword = confirmUserPassword.value.trim().toLocaleLowerCase();
 
-  const isValid = userEmailLabel.innerText === "" && confirmUserEmailLabel.innerText === "" && userPasswordLabel.innerText === "" && confirmUserPasswordLabel.innerText === "";
+  const isValid = userEmailLabel.innerText === "" && confirmUserEmailLabel.innerText === "" && userPasswordLabel.innerText === "" && confirmUserPasswordLabel.innerText === "" && userEmail.value.includes(".") && userEmail.value.includes(".") && userPassword.value.length > 7;
 
   if (isValid) {
     submitMessage.innerText = "Konto skapat";
@@ -28,11 +28,15 @@ userForm.addEventListener("submit", (e) => {
     submitMessage.classList.remove("error");
 
     const email = userEmail.value.trim().toLocaleLowerCase();
+    const confirmEmail = userEmail.value.trim().toLocaleLowerCase();
     const password = userPassword.value.trim();
+    const confimPassword = userPassword.value.trim();
 
     const user = {
       email: email,
+      confirmEmail: confirmEmail,
       password: password,
+      confirmPassword: confimPassword,
     };
 
     addUser(user);
@@ -101,6 +105,7 @@ async function getUsers() {
 }
 
 async function addUser(user) {
+  console.log("User: ", user);
   try {
     const res = await fetch("http://localhost:3000/users", {
       method: "POST",
