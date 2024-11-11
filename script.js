@@ -23,7 +23,7 @@ userForm.addEventListener("submit", (e) => {
   const isValid = userEmailLabel.innerText === "" && confirmUserEmailLabel.innerText === "" && userPasswordLabel.innerText === "" && confirmUserPasswordLabel.innerText === "" && userEmail.value.includes(".") && userEmail.value.includes(".") && userPassword.value.length > 7;
 
   if (isValid) {
-    submitMessage.innerText = "Konto skapat";
+    // submitMessage.innerText = "Konto skapat";
     submitMessage.classList.add("success");
     submitMessage.classList.remove("error");
 
@@ -118,8 +118,8 @@ async function addUser(user) {
       throw new Error("Network response was not ok");
     } else {
       const users = await res.json();
-      console.log("Users: ", users);
       renderUser(users);
+      submitMessage.innerText = users.message;
     }
   } catch (error) {
     console.log(`There was a problem adding user ${user}`);
