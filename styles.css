@@ -16,35 +16,23 @@ body {
   margin: 0;
 }
 
-.buttonGroup {
-  display: flex;
-  align-items: flex-start;
-}
-
-.buttonGroup label {
-  display: inline-block;
-  white-space: nowrap;
-  margin-left: 8px;
-  margin-right: 20px;
-}
-
-.buttonGroup input {
-  display: inline-block;
-  margin-top: 5px;
-}
-
-h2 {
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.accountForm {
+.userEmail {
+  width: min(100%, 500px);
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
-  max-width: 90%;
+  padding: 10px;
+}
+
+.userEmail form {
+  display: flex;
+  gap: 1rem;
+}
+
+.userEmail form button {
+  width: fit-content;
+  white-space: nowrap;
+  padding: 0 1rem;
 }
 
 input {
@@ -83,28 +71,6 @@ input:focus {
 
 .submitMessage {
   margin-top: 10px;
-}
-
-@media (max-width: 400px) {
-  .accountForm {
-    width: 90%;
-  }
-}
-
-.btn {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: none;
-}
-
-.btnCancel {
-  background-color: rgb(240, 59, 59);
-}
-
-#resetPasswordBtn,
-#cancelResetPasswordBtn {
-  margin-bottom: 7px;
 }
 
 .hidden {
