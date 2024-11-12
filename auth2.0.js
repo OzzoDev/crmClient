@@ -68,6 +68,7 @@ async function isNewUser(email) {
     if (existsOnServer) {
       console.log("User exists, sign in");
     } else {
+      redirectToAnotherPage("signUp.html");
       console.log("New user, sign up");
     }
   } else {
@@ -90,4 +91,8 @@ async function getUsers() {
     console.log("There was a problem with fetching users");
   }
   return fetchUsers;
+}
+
+function redirectToAnotherPage(path) {
+  window.location.href = path;
 }
