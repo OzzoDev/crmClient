@@ -188,15 +188,11 @@ inResetBtn.addEventListener("click", (e) => {
       inNewPassword.classList.toggle("hidden");
 
       if (inNewPassword.classList.contains("hidden")) {
-        // console.log("Your are valid");
         getUsers()
           .then((allUsers) => {
             const userExists = allUsers.filter((user) => user.email === email).length > 0;
 
             if (userExists) {
-              console.log("Changed password");
-              // getPassCode(email);
-              console.log(passCode.value, passChangeCode);
               const validCode = passCode.value === passChangeCode;
               if (validCode) {
                 changePassword({ email: email, password: password, confirmNewPassWord: confirmNewPassWord, code: passCode.value });
@@ -206,10 +202,11 @@ inResetBtn.addEventListener("click", (e) => {
           .catch((error) => {
             console.log("Error fetching users", error);
           });
-        inNewPassword.classList.add("hidden");
+        inSubmitMessage.innerText = "";
         inPassword.placeholder = "Ange lösenord";
         inNewPassword.placeholder = "Bekräfta nytt lösenord";
         inResetBtn.innerText = "Återställ lösenord";
+        inNewPassword.classList.add("hidden");
         cancelResetPasswordBtn.classList.add("hidden");
         passCode.classList.add("hidden");
       } else {
