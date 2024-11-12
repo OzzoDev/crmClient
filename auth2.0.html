@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM Client</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- <h2>Add new user</h2> -->
+
+    <!-- sign up -->
+
+    <div class="buttonGroup">
+      <input type="radio" id="signUp" class="signBtn" name="auth" checked />
+      <label for="signUp">Sign Up</label>
+
+      <input type="radio" id="signIn" class="signBtn" name="auth" />
+      <label for="signIn">Sign In</label>
+    </div>
+
+    <div id="signUpForm">
+      <form id="upForm" class="accountForm">
+        <input id="upEmail" placeholder="Ange mejl" />
+        <label for="upEmail" id="upEmailLabel"></label>
+
+        <input id="confirmUpEmail" placeholder="Bekräfta mejl" />
+        <label for="confirmUpEmail" id="confirmUpEmailLabel"></label>
+
+        <input id="upPassword" type="password" placeholder="Välj ett lösenord" />
+        <label for="upPassword" id="upPasswordLabel"></label>
+
+        <input id="confirmUpPassword" type="password" placeholder="Bekräfta lösenord" />
+        <label for="confirmUpPassword" id="confirmUpPasswordLabel"></label>
+
+        <button type="submit" id="upSubmitBtn" class="submitBtn">Skicka</button>
+        <p id="upSubmitMessage" class="submitMessage"></p>
+      </form>
+    </div>
+
+    <!-- sign in -->
+    <div id="signInForm" class="hidden">
+      <form id="inForm" class="accountForm">
+        <input id="inEmail" placeholder="Ange mejl" />
+        <label for="inEmail" id="inEmailLabel"></label>
+
+        <input id="passCode" placeholder="Ange koden skickat till din mejl" class="hidden" />
+        <label for="passCode" id="passCodeLabel"></label>
+
+        <input id="inPassword" type="password" placeholder="Ange lösenord" />
+        <label for="inPassword" id="inPasswordLabel"></label>
+
+        <input id="inNewPassword" type="password" class="hidden" placeholder="Bekräfta lösenord" />
+        <label for="inNewPassword" id="inNewPasswordLabel"></label>
+
+        <button id="cancelResetPasswordBtn" class="btn btnCancel hidden">Avbryt</button>
+        <button id="resetPasswordBtn" class="btn">Återställ lösenord</button>
+        <button type="submit" id="inSubmitBtn" class="submitBtn">Skicka</button>
+        <p id="inSubmitMessage" class="submitMessage"></p>
+      </form>
+    </div>
+
+    <ul id="users"></ul>
+
+    <script src="auth2.0.js"></script>
+  </body>
+</html>
