@@ -68,6 +68,7 @@ async function isNewUser(email) {
     if (existsOnServer) {
       console.log("User exists, sign in");
     } else {
+      saveEmailToLocalStorage(email);
       redirectToAnotherPage("signUp.html");
       console.log("New user, sign up");
     }
@@ -95,4 +96,15 @@ async function getUsers() {
 
 function redirectToAnotherPage(path) {
   window.location.href = path;
+}
+
+function saveEmailToLocalStorage(email) {
+  clearLocalStorage();
+  localStorage.setItem("email", JSON.stringify({ key: email }));
+}
+
+function clearLocalStorage() {
+  if (typeof Storage !== "undefined") {
+    localStorage.clear();
+  }
 }
