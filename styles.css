@@ -16,7 +16,7 @@ body {
   margin: 0;
 }
 
-.userEmail {
+.authContainer {
   width: min(100%, 500px);
   background: white;
   border-radius: 8px;
@@ -33,6 +33,15 @@ body {
   width: fit-content;
   white-space: nowrap;
   padding: 0 1rem;
+}
+
+.authContainer form .emailHolder {
+  padding: 0.6rem;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #e6e8eb;
+  color: rgb(22, 22, 22);
+  margin-bottom: 1rem;
 }
 
 input {
@@ -54,6 +63,23 @@ input:focus {
   outline: none;
 }
 
+.btn {
+  background-color: #e6e8eb;
+  color: rgb(22, 22, 22);
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.cancelBtn {
+  color: #f5f0f0;
+  background-color: rgb(179, 70, 70);
+}
+
 .submitBtn {
   background-color: #007bff;
   color: white;
@@ -71,6 +97,11 @@ input:focus {
 
 .submitMessage {
   margin-top: 10px;
+  font-size: 0.8rem;
+}
+
+.m-1rem {
+  margin-bottom: 1rem;
 }
 
 .hidden {

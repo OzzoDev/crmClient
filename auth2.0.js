@@ -8,7 +8,7 @@ function createEmailAuth() {
   const emailInput = document.createElement("input");
   const emailSubmitBtn = document.createElement("button");
 
-  emailContainer.setAttribute("class", "userEmail");
+  emailContainer.setAttribute("class", "emailContainer authContainer");
   emailInput.setAttribute("placeholder", "Ange en mejladress");
   emailSubmitBtn.innerText = "Gå vidare";
   emailSubmitBtn.setAttribute("type", "submit");
@@ -65,12 +65,13 @@ async function isNewUser(email) {
   if (email.includes(".") && email.includes("@")) {
     const userOnServer = await getUsers();
     const existsOnServer = userOnServer.filter((user) => user.email === email).length > 0;
+    saveEmailToLocalStorage(email);
     if (existsOnServer) {
-      console.log("User exists, sign in");
+      redirectToAnotherPage("signIn.html");
+      //   console.log("User exists, sign in");
     } else {
-      saveEmailToLocalStorage(email);
       redirectToAnotherPage("signUp.html");
-      console.log("New user, sign up");
+      //   console.log("New user, sign up");
     }
   } else {
     console.log("You must enter a vaild email");
